@@ -20,6 +20,8 @@ Or install it yourself as:
 
 ## Usage
 
+AppleLoad generates AppleScript commands, which means that Application Loader will require window focus - in other words, you can't do anything else with your keyboard or mouse while it runs.
+
 ### Commands
 
 The following commands are supported:
@@ -31,6 +33,7 @@ The following commands are supported:
 
 ```bash
 $ appleload list
+{"apps":[{"title":"My Awesome App","version":"1.0.0","type":"ios"}]}
 
 $ appleload upload "My Awesome App" ./app.ipa
 ```
@@ -44,6 +47,7 @@ AppleLoad.list
 # => [{title: "My Awesome App", version: "1.0.0", type: :is}]
 
 AppleLoad.upload("My Awesome App", "./app.ipa")
+# => true
 ```
 
 ## Contact
