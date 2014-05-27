@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+# -*- mode: ruby -*-
+
+require "thor"
+require 'shellwords'
+require 'json'
+
+appleload = File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', 'appleload'))
+require appleload
+
+class AppleLoad::CLI < Thor
+  desc "list", "List apps awaiting an upload"
+  def list
+    apps = AppleLoad.new.list
+    data = {apps: apps}
+    puts JSON.generate(data)
+    true
+  end
+
+  desc "upload TITLE IPA_PATH", "Upload the .ipa at IPA_PATH for app named TITLE"
+  def upload(title, ipa_path)
+    AppleLoad.new.upload(title, ipa_path)
+    puts JSON.generate(success: true)
+    true
+  end
+end
+
+AppleLoad::CLI.start(ARGV)
