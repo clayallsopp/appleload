@@ -32,9 +32,25 @@ class AppleLoad
     end
   end
 
+  def with_gui(&block)
+    open_app!
+    begin
+      result = yield
+      quit_app!
+      result
+    rescue Exception => e
+      quit_app!
+      raise e
+    end
+  end
 
-  def open_app
+  def open_app!
     `open -a #{LOCATION.shellescape}`
+    sleep 2
+  end
+
+  def quit_app!
+    applescript('tell application "Application Loader" to quit')
     sleep 2
   end
 
@@ -53,9 +69,9 @@ end tell}
   end
 
   def list
-    self.open_app
-    self.open_delivery
-    titles = applescript(%Q{
+    with_gui do
+      self.open_delivery
+      titles = applescript(%Q{
 set menuItemTitles to ""
 activate application "Application Loader"
 tell application "System Events"
@@ -74,23 +90,24 @@ end tell
 
 return menuItemTitles
     }).gsub("Choose..., ", "").split(", ").map(&:strip).map { |string|
-      without_suffix = string.split(IOS_SUFFIX).first
-      version = without_suffix.split(" ")[-1]
-      title = without_suffix.split(" ")[0..-1].join(" ")
+        without_suffix = string.split(IOS_SUFFIX).first
+        version = without_suffix.split(" ")[-1]
+        title = without_suffix.split(" ")[0..-1].join(" ")
 
-      {
-        title: title,
-        version: version,
-        type: :ios
+        {
+          title: title,
+          version: version,
+          type: :ios
+        }
       }
-    }
+    end
   end
 
   def upload(title, ipa_path)
     title = title[0..25] # only first 25 chars
-    self.open_app
-    self.open_delivery
-    applescript(%Q{
+    with_gui do
+      self.open_delivery
+      applescript(%Q{
 set menuItemTitles to ""
 set menuItemToSelect to "#{title}"
 set ipaPath to "#{ipa_path}"
@@ -137,6 +154,7 @@ tell application "System Events"
   end tell
 end tell
 })
-    true
+      true
+    end
   end
 end
