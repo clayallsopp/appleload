@@ -2,7 +2,7 @@
 
 A CLI & Ruby Library to control Apple's Application Loader app.
 
-This is *experimental* - it's good enough for us, but it has not been exhaustively tested beyond our needs.
+This is *experimental* - good enough for deploying apps made with [Propeller](http://usepropeller.com), but has not been exhaustively tested beyond our needs.
 
 ## Installation
 
