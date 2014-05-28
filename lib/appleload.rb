@@ -1,3 +1,5 @@
+require 'shellwords'
+
 require_relative 'appleload/version'
 require_relative 'appleload/applescript'
 
