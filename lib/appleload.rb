@@ -106,6 +106,7 @@ return menuItemTitles
   end
 
   def upload(title, ipa_path)
+    ipa_path = File.expand_path(ipa_path)
     title = title[0..25] # only first 25 chars
     with_gui do
       self.open_delivery
